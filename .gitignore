@@ -1,0 +1,12 @@
+.idea
+.vscode
+/make_data/data/01_alb_id/images
+/make_data/data/02_aut_drvlic_new/images
+/make_data/data/03_aut_id_old/images
+/make_data/data/05_aze_passport/images
+/make_data/data/06_bra_passport/images
+/make_data/data/07_chl_id/images
+/make_data/data/08_chn_homereturn/images
+/make_data/data/10_cze_id/images
+/make_data/data/11_cze_passport/images
+/make_data/data/12_deu_drvlic_new/images
