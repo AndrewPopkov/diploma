@@ -99,6 +99,7 @@ def get_image_describe():
             # img_describe['tranform_m'] = calc_tranform(sample_json, sample_img_bar, photo_json)
             img_describe['real_doc_json'] = photo_json['bbox']
             img_describe['photo_on_doc'] = sample_json['bbox']
+            img_describe['Sample_Image'] = pathFolder['Sample_Image']
             img_describe['sample_bar_doc'] = sample_img_bar['bbox']
             img_describe['file_name'] = pair[1]['file_name']
             img_describe['file_path'] = pair[1]['file_path']
@@ -174,6 +175,13 @@ def handled_image(img_describe):
 
 if __name__ == '__main__':
     for img_describe in get_image_describe():
+        if not os.path.exists(img_describe['Sample_Image'].replace("images", "images_cropped")):
+            # os.makedirs(img_describe['new_folder'])
+            img = cv2.imread(img_describe['Sample_Image'])
+            crop = img_describe['photo_on_doc']
+            crop_img = img[int(crop[0][1]):int(crop[2][1]), int(crop[0][0]):int(crop[2][0])].copy()
+            is_written = cv2.imwrite(img_describe['Sample_Image'].replace("images", "images_cropped"),
+                                 crop_img)
         img_describe['new_folder'] = img_describe['file_path'] \
             .replace("images", "images_cropped") \
             .replace(os.path.basename(img_describe['file_path']), "")
