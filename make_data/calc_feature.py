@@ -13,7 +13,7 @@ def get_image_describe():
             os.path.join(os.path.join(os.getcwd(), "data"), folder_d, "images_cropped"), folder_d + '.tif')
         for folder_i in os.listdir(os.path.join(os.path.join(os.getcwd(), "data"), folder_d, "images_cropped")):
             img_result.append(('main_' + folder_d + '.tif',  sample_Image))
-            if not folder_i.endswith(".tif"):
+            if not folder_i.endswith(".tif") and not folder_i.endswith(".csv"):
                 for file_inner in os.listdir(
                         os.path.join(os.path.join(os.path.join(os.getcwd(), "data"), folder_d, "images_cropped"),
                                      folder_i)):
@@ -38,25 +38,32 @@ def get_image_describe():
     result['adaptive_tenengrad_sharpness'] = []
     result['illumination'] = []
     i = 1
+    tt=[]
     img_result=set(img_result)
     for pathFolder in img_result:
+        image = Image.open(pathFolder[1])
+        h,w,_ = np.array(image).shape
+        tt.append([h,w])
         # if i % 500 == 0:
         #     measure = pd.DataFrame(result)
         #     measure.to_csv(str(i) + '_measure_result.csv', index=False)
-        result['name'].append(pathFolder[0])
-        result['rms_contrast'].append(calc_rms_contrast(pathFolder[1]))
-        result['michelson_contrast'].append(calc_michelson_contrast(pathFolder[1]))
-        result['hbs_brightness'].append(calc_hbs_brightness(pathFolder[1]))
-        result['bezryadinetal_brightness'].append(calc_bezryadinetal_brightness(pathFolder[1]))
-        result['L1_norm'].append(L1_norm(pathFolder[1]))
-        result['energy_Laplacian'].append(energy_Laplacian(pathFolder[1]))
-        result['kryszczuk_drygajlo_sharpness'].append(kryszczuk_drygajlo_sharpness(pathFolder[1]))
-        result['gao_sharpness'].append(gao_sharpness(pathFolder[1]))
-        result['tenengrad_sharpness'].append(tenengrad_sharpness(pathFolder[1]))
-        result['adaptive_tenengrad_sharpness'].append(adaptive_tenengrad_sharpness(pathFolder[1]))
-        result['illumination'].append(illumination(pathFolder[1]))
+        # result['name'].append(pathFolder[0])
+        # result['rms_contrast'].append(calc_rms_contrast(pathFolder[1]))
+        # result['michelson_contrast'].append(calc_michelson_contrast(pathFolder[1]))
+        # result['hbs_brightness'].append(calc_hbs_brightness(pathFolder[1]))
+        # result['bezryadinetal_brightness'].append(calc_bezryadinetal_brightness(pathFolder[1]))
+        # result['L1_norm'].append(L1_norm(pathFolder[1]))
+        # result['energy_Laplacian'].append(energy_Laplacian(pathFolder[1]))
+        # result['kryszczuk_drygajlo_sharpness'].append(kryszczuk_drygajlo_sharpness(pathFolder[1]))
+        # result['gao_sharpness'].append(gao_sharpness(pathFolder[1]))
+        # result['tenengrad_sharpness'].append(tenengrad_sharpness(pathFolder[1]))
+        # result['adaptive_tenengrad_sharpness'].append(adaptive_tenengrad_sharpness(pathFolder[1]))
+        # result['illumination'].append(illumination(pathFolder[1]))
         print("calc measure for " + pathFolder[0])
         i = i + 1
+    p=np.array(tt)
+    h_a=p[:, 0:1]
+    w_a = p[:, 1:]
     measure = pd.DataFrame(result)
     measure.to_csv('measure_result.csv', index=False)
     return result

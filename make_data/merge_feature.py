@@ -25,8 +25,21 @@ norm_mean_feature=np.concatenate((d[:, :1],contrast.reshape(3311, 1), brightness
                                   sharpness.reshape(3311, 1),illumination.reshape(3311, 1)), axis=1)
 n_m_f = pd.DataFrame(norm_mean_feature, columns=['name', 'contrast', 'brightness', 'focus', 'sharpness', 'illumination'])
 n_m_f.to_csv('norm_mean_feature.csv', index=False)
+# michelson_contrast, adaptive_tenengrad_sharpness, energy_Laplacian, illumination
+m_c=np.array(n_f.michelson_contrast.tolist()).astype(np.float)
+a_t_s=np.array(n_f.adaptive_tenengrad_sharpness.tolist()).astype(np.float)
+e_l=np.array(n_f.energy_Laplacian.tolist()).astype(np.float)
+il=np.array(n_f.illumination.tolist()).astype(np.float)
+norm_selected_feature=np.concatenate((d[:, :1],m_c.reshape(3311, 1), a_t_s.reshape(3311, 1),e_l.reshape(3311, 1),
+                                  il.reshape(3311, 1)), axis=1)
+
 mean = norm_mean_feature[:, 1:].astype(np.float).mean(axis=1)
 geo_mean= norm_mean_feature[:, 1:].astype(np.float).prod(axis=1)**(1.0/norm_mean_feature[:, 1:].shape[1])
 merge_feature = pd.DataFrame(np.concatenate((d[:, :1], mean.reshape(3311, 1), geo_mean.reshape(3311, 1)), axis=1), columns=['name', 'mean', 'geo_mean'])
 merge_feature.to_csv('merge_feature.csv', index=False)
 # print(merge_feature.head(100))
+
+selected_mean = norm_selected_feature[:, 1:].astype(np.float).mean(axis=1)
+selected_geo_mean= norm_selected_feature[:, 1:].astype(np.float).prod(axis=1)**(1.0/norm_mean_feature[:, 1:].shape[1])
+selected_merge_feature = pd.DataFrame(np.concatenate((d[:, :1], selected_mean.reshape(3311, 1), selected_geo_mean.reshape(3311, 1)), axis=1), columns=['name', 'mean', 'geo_mean'])
+selected_merge_feature.to_csv('selected_merge_feature.csv', index=False)
